@@ -4,6 +4,7 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
+    flex-direction: column;
     height: 100vh;
     margin: 0;
 }
@@ -15,7 +16,7 @@ body {
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
     width: 90%;
     max-width: 400px;
-    animation: fadeInUp 0.8s;
+    max-height: 500px;
 }
 
 h2 {
@@ -74,7 +75,7 @@ ul {
     list-style: none;
     padding: 0;
     margin-top: 20px;
-    max-height: 300px;
+    max-height: 240px;
     overflow-y: auto;
 }
 
@@ -162,6 +163,11 @@ ul:hover::-webkit-scrollbar-thumb {
     background-color: rgb(237, 237, 237);
 }
 
+footer {
+    display: flex;
+    justify-content: center;
+}
+
 /* Mobile Responsive */
 @media (max-width: 480px) {
     .input-group {
@@ -169,7 +175,7 @@ ul:hover::-webkit-scrollbar-thumb {
     }
 
     button {
-        width: 100%;
+        /* width: 100%; */
     }
 
     li {
@@ -179,5 +185,22 @@ ul:hover::-webkit-scrollbar-thumb {
 
     .todo-actions {
         margin-top: 5px;
+    }
+
+    .todo-nav {
+        display: flex;
+        gap: 0.5rem;
+    }
+
+    .todo-nav>button {
+        padding: 4px 12px;
+        font-size: 12px;
+        width: auto;
+        flex: 1;
+    }
+
+    #clearAll-todo {
+        font-size: 14px;
+        padding: 6px 10px;
     }
 }
