@@ -18,6 +18,9 @@ function todoClickHandler() {
     if (!todoInp.value.trim()) {
         alert("please add todo");
         return;
+    } else if (todoInp.value.length > 35) {
+        alert("The length must be less then 35");
+        return;
     }
     todos.push({ complete: false, todo: todoInp.value.trim() });
     setTodo(todos);
