@@ -33,7 +33,7 @@ function displayTodo(todos) {
         todoList.innerHTML += `
       <li>
                 <div class="${isComplete && 'completed'}">
-                    <input type="checkbox" onchange="isCompleteHandler(${i})" ${isComplete && "checked"}>${todos[i].todo}
+                    <label><input type="checkbox" onchange="isCompleteHandler(${i})" ${isComplete && "checked"}>${todos[i].todo}</label>
                 </div>
                 <div class="todo-actions">
                     <i class="fas fa-edit" onclick="editTodo(${i})"></i>

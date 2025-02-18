@@ -92,6 +92,7 @@ li {
 
 li input[type="checkbox"] {
     margin-right: 10px;
+    accent-color: #28a745;
 }
 
 .completed {
@@ -102,6 +103,10 @@ li input[type="checkbox"] {
 .todo-actions {
     display: flex;
     gap: 10px;
+}
+
+label {
+    cursor: pointer;
 }
 
 .todo-actions i {
@@ -156,6 +161,7 @@ ul:hover::-webkit-scrollbar-thumb {
 .todo-nav>button.active {
     background-color: rgb(237, 237, 237);
 }
+
 /* Mobile Responsive */
 @media (max-width: 480px) {
     .input-group {
