@@ -11,9 +11,11 @@ let editableTodo = undefined;
 function setTodo(todos) {
     localStorage.setItem("todos", JSON.stringify(todos));
 }
+let id = (todos.length > 0) ? todos.at(-1).id : 0;
 
 // todo click handler
 function todoClickHandler() {
+    id++;
     console.log("called");
     if (!todoInp.value.trim()) {
         alert("please add todo");
@@ -22,7 +24,7 @@ function todoClickHandler() {
         alert("The length must be less then 35");
         return;
     }
-    todos.push({ complete: false, todo: todoInp.value.trim() });
+    todos.push({ complete: false, todo: todoInp.value.trim(), id });
     setTodo(todos);
     displayTodo(todos);
     todoInp.value = "";
@@ -34,13 +36,13 @@ function displayTodo(todos) {
     for (let i = 0; i < todos.length; i++) {
         const isComplete = todos[i].complete !== false;
         todoList.innerHTML += `
-      <li>
+        <li>
                 <div class="${isComplete && 'completed'}">
-                    <label><input type="checkbox" onchange="isCompleteHandler(${i})" ${isComplete && "checked"}>${todos[i].todo}</label>
+                    <label><input type="checkbox" onchange="isCompleteHandler(${todos[i].id})" ${isComplete && "checked"}>${todos[i].todo}</label>
                 </div>
                 <div class="todo-actions">
-                    <i class="fas fa-edit" onclick="editTodo(${i})"></i>
-                    <i class="fas fa-trash" onclick="delTodo(${i})"></i>
+                    <i class="fas fa-edit" onclick="editTodo(${todos[i].id})"></i>
+                    <i class="fas fa-trash" onclick="delTodo(${todos[i].id})"></i>
                 </div>
             </li>
         `;
@@ -57,9 +59,18 @@ function displayTodo(todos) {
 displayTodo(todos);
 
 // delete todo 
-function delTodo(idx) {
+function delTodo(id) {
     const confirmDel = confirm("Do you want to delete todo?");
+    console.log(editableTodo);
+
+    if (confirmDel && editableTodo) {
+        updateTodoBtn.style.display = "none";
+        addTodoBtn.style.display = "block";
+        todoInp.value = "";
+        editableTodo = undefined;
+    }
     if (confirmDel) {
+        const idx = todos.findIndex(todo => todo.id === id);
         todos.splice(idx, 1);
         setTodo(todos);
         displayTodo(todos);
@@ -70,7 +81,8 @@ function delTodo(idx) {
 }
 
 // editTodo Handler
-function editTodo(idx) {
+function editTodo(id) {
+    const idx = todos.findIndex(todo => todo.id === id);
     const todoObj = todos[idx];
     editableTodo = todoObj;
     todoInp.value = todoObj.todo;
@@ -81,11 +93,15 @@ function editTodo(idx) {
 
 // updateTodo Handler
 function updateTodo() {
-    if (!todoInp.value.trim()) {
+    const val = todoInp.value.trim();
+    if (!val) {
         alert("Todo can't be empty.");
         return;
-    } else if (todoInp.value.trim() === editableTodo["todo"]) {
+    } else if (val === editableTodo["todo"]) {
         alert("It's previous value");
+        return;
+    } else if (val.length > 35) {
+        alert("The length must be less then 35");
         return;
     }
     editableTodo["todo"] = todoInp.value;
@@ -98,11 +114,15 @@ function updateTodo() {
 }
 
 // complete todo
-function isCompleteHandler(idx) {
+function isCompleteHandler(id) {
+    console.log(id);
     event.target.closest("div").classList.toggle("completed");
-    const isComplete = todos[idx].complete;
-    todos[idx].complete = (isComplete === true) ? false : true;
+    const idx = todos.findIndex(todo => todo.id === id);
+    const todo = todos[idx];
+    todo.complete = (todo.complete === true) ? false : true;
+    todos[idx] = todo;
     setTodo(todos);
+    console.log(todos[idx]);
 }
 
 // Delete all todos
@@ -145,10 +165,7 @@ function todoNavHandler(type) {
         displayTodo(todos);
     }
 }
-function allCompleteTodos() {
-    const activeTodos = todos.filter(todo => todo.complete);
-    displayTodo(activeTodos);
-}
+
 // when user press enter on keyboard this listener will be executed
 todoInp.addEventListener("keypress", function (e) {
     if (e.key === "Enter") {
